@@ -21,7 +21,7 @@ jobs:
     - name: Set up Docker metadata
       uses: docker/metadata-action@v4  # 获取镜像的元数据（标签等）
       with:
-        images: your-dockerhub-username/your-repository-name  # 替换为你的 Docker Hub 用户名和仓库名
+        images: ventsze/my-python-app  # 替换为你的 Docker Hub 用户名和仓库名
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v4  # 构建和发布 Docker 镜像
