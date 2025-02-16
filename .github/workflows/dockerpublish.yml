@@ -1,27 +1,35 @@
-name: Build and Publish Docker Image
+name: Publish Docker Image
 
 on:
   release:
-    types: [published]  # 当发布新版本时触发工作流
+    types: [published]  # 当发布新版本时触发
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # 使用最新版本的 Ubuntu 环境
-    
+    runs-on: ubuntu-latest  # 使用最新版本的 Ubuntu
+
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # 拉取最新的代码
+      uses: actions/checkout@v4  # 获取代码
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2  # 设置 Docker Buildx
 
     - name: Log in to Docker Hub
-      uses: docker/login-action@v2  # 使用 Docker Hub 登录插件
+      uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}  # 使用 GitHub Secrets 中的 DOCKER_USERNAME
-        password: ${{ secrets.DOCKER_PASSWORD }}  # 使用 GitHub Secrets 中的 DOCKER_PASSWORD
+        username: ${{ secrets.DOCKER_USERNAME }}  # 使用 GitHub Secrets 中的 Docker 用户名
+        password: ${{ secrets.DOCKER_PASSWORD }}  # 使用 GitHub Secrets 中的 Docker 密码
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v4  # 构建和发布 Docker 镜像
+    - name: Extract metadata
+      uses: docker/metadata-action@v4  # 获取 Docker 镜像的标签
       with:
-        context: .  # 构建上下文（当前目录）
-        file: Dockerfile  # 指定 Dockerfile 文件
-        push: true  # 发布镜像到 Docker Hub
-        tags: ventsze/my-python-app:v1.0.1  # 强制指定版本号标签
+        images: yourdockerhubusername/yourimage  # 替换为你 Docker Hub 上的镜像名称
+
+    - name: Build and Push Docker image
+      uses: docker/build-push-action@v4  # 构建并推送 Docker 镜像
+      with:
+        context: .  # 使用当前目录作为构建上下文
+        file: ./Dockerfile  # Dockerfile 文件的位置
+        push: true  # 将镜像推送到 Docker Hub
+        tags: ${{ steps.metadata.outputs.tags }}  # 使用提取的标签
