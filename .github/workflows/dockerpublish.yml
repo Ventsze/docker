@@ -1,5 +1,32 @@
-FROM python:3.12-slim
-WORKDIR /app
-COPY . /app
-RUN pip install --no-cache-dir -r requirements.txt
-CMD ["pytest"]
+name: Build and Publish Docker Image
+
+on:
+  release:
+    types: [published]  # 当发布新版本时触发工作流
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # 使用最新版本的 Ubuntu 环境
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4  # 拉取最新的代码
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2  # 使用 Docker Hub 登录插件
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}  # 使用 GitHub Secrets 中的 DOCKER_USERNAME
+        password: ${{ secrets.DOCKER_PASSWORD }}  # 使用 GitHub Secrets 中的 DOCKER_PASSWORD
+
+    - name: Set up Docker metadata
+      uses: docker/metadata-action@v4  # 获取镜像的元数据（标签等）
+      with:
+        images: your-dockerhub-username/your-repository-name  # 替换为你的 Docker Hub 用户名和仓库名
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4  # 构建和发布 Docker 镜像
+      with:
+        context: .  # 构建上下文（当前目录）
+        file: Dockerfile  # 指定 Dockerfile 文件
+        push: true  # 发布镜像到 Docker Hub
+        tags: ${{ steps.metadata.outputs.tags }}  # 使用前一步提取的标签
