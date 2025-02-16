@@ -29,4 +29,4 @@ jobs:
         context: .  # 构建上下文（当前目录）
         file: Dockerfile  # 指定 Dockerfile 文件
         push: true  # 发布镜像到 Docker Hub
-        tags: ${{ steps.metadata.outputs.tags }}  # 使用前一步提取的标签
+        tags: v1.0.1  # 使用前一步提取的标签
