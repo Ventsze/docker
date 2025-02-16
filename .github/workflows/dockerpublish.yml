@@ -18,10 +18,8 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}  # 使用 GitHub Secrets 中的 DOCKER_USERNAME
         password: ${{ secrets.DOCKER_PASSWORD }}  # 使用 GitHub Secrets 中的 DOCKER_PASSWORD
 
-    - name: Set up Docker metadata
-      uses: docker/metadata-action@v4  # 获取镜像的元数据（标签等）
-      with:
-        images: ventsze/my-python-app  
+    - name: Debug release tag
+      run: echo "Release tag: ${{ github.event.release.tag_name }}"  # 输出发布的标签，便于调试
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v4  # 构建和发布 Docker 镜像
@@ -29,4 +27,4 @@ jobs:
         context: .  # 构建上下文（当前目录）
         file: Dockerfile  # 指定 Dockerfile 文件
         push: true  # 发布镜像到 Docker Hub
-        tags: ventsze/my-python-app:${{ github.event.release.tag_name }}  # 使用发布的版本号作为标签
+        tags: your-docker-username/my-python-app:${{ github.event.release.tag_name }}  # 使用发布的版本号作为标签
