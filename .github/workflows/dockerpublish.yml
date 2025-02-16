@@ -24,10 +24,12 @@ jobs:
     - name: Extract metadata
       uses: docker/metadata-action@v4  # 获取 Docker 镜像的标签
       with:
-        images: yourdockerhubusername/yourimage  # 替换为你 Docker Hub 上的镜像名称
+        images: ventsze/my-python-app  # 替换为你 Docker Hub 上的镜像名称
+        tags: |
+          type=ref,event=release  
 
     - name: Build and Push Docker image
-      uses: docker/build-push-action@v4  # 构建并推送 Docker 镜像
+      uses: docker/build-push-action@v4  # 关键步骤：构建并推送 Docker 镜像
       with:
         context: .  # 使用当前目录作为构建上下文
         file: ./Dockerfile  # Dockerfile 文件的位置
