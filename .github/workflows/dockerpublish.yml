@@ -18,6 +18,11 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}  # 使用 GitHub Secrets 中的 DOCKER_USERNAME
         password: ${{ secrets.DOCKER_PASSWORD }}  # 使用 GitHub Secrets 中的 DOCKER_PASSWORD
 
+    - name: Set up Docker metadata
+      uses: docker/metadata-action@v4  # 获取镜像的元数据（标签等）
+      with:
+        images: ventsze/my-python-app  
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v4  # 构建和发布 Docker 镜像
       with:
