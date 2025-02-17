@@ -26,6 +26,12 @@ jobs:
         uses: docker/build-push-action@v6  # 构建并推送 Docker 镜像
         with:
           context: .  # 使用当前目录作为构建上下文
+<<<<<<< HEAD
           file: ../../Dockerfile   # Dockerfile 文件的位置
           push: true  # 将镜像推送到 Docker Hub
           tags: ventsze/my-python-app:${{ github.ref_name }}  # 手动指定标签（使用 GitHub Release 的版本号）
+=======
+          file: ./Dockerfile  # Dockerfile 文件的位置
+          push: true  # 将镜像推送到 Docker Hub
+          tags: ventsze/my-python-app:${{ github.ref_name }}  # 手动指定标签（使用 GitHub Release 的版本号）
+>>>>>>> a49c56f52b950aee15c093a31abd60b00bd9233c
